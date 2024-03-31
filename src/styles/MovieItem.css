@@ -1,0 +1,36 @@
+.movie-item-container {
+    display: inline-block;
+    max-width: 180px;
+    background-color: #202020;
+    border: 2px solid #0000
+}
+
+.movie-item-container:hover {
+    background-color: #ffffff1a;
+    transform: scale(0.97);
+}
+
+.movie-item-poster {
+    height: 250px;
+}
+
+.movie-item-poster>img {
+    width: 100%;
+    height: 100%;
+}
+
+.movie-item-title {
+    font-size: 1rem;
+    /* text-align: center; */
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    text-wrap: nowrap;
+
+}
+
+
+
+.movie-item-genre,
+.movie-item-genre>div {
+    display: inline-block;
+}

@@ -1,0 +1,21 @@
+.ticket-detail-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+}
+
+
+
+.ticket-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ticket-list-item {
+    padding: 10px;
+    color: white;
+    width: 18rem;
+    background-color: #353535;
+}

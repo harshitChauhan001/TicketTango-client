@@ -1,0 +1,36 @@
+.show-detail-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+
+}
+
+
+
+.show-grid {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    flex-wrap: wrap
+}
+
+.show-item {
+    padding: 10px;
+    color: white;
+    width: 18rem;
+    background-color: #353535;
+
+}
+
+.show-item:hover {
+    background-color: #505050;
+    transform: scale(0.97);
+}
+
+.booked-seat-Numbers {
+    display: flex;
+    height: auto;
+    flex-wrap: wrap;
+    text-wrap: wrap;
+}

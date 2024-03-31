@@ -1,0 +1,11 @@
+.movielist-container {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+    width: 100%;
+    /* outline: 2px solid limegreen;#202020 */
+    display: grid;
+    grid-gap: 0.5rem;
+    justify-items: stretch;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+}

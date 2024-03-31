@@ -1,0 +1,28 @@
+.sidebar-container {
+    width: 300px;
+    background-color: #202020;
+}
+
+.sidebar-ul {
+    list-style: none;
+}
+
+
+.sidebar-li {
+    padding-left: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.sidebar-ul:last-child {
+    padding-bottom: 1rem;
+}
+
+.sidebar-li-title {
+    text-align: center;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    padding-left: 0;
+    border-bottom: 1px solid #262626;
+}
