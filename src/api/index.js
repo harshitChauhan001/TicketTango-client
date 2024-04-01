@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:3000" });
+const API = axios.create({ baseURL: "https://electric-blue-worm-hose.cyclic.app/" });
 
 export const fetchAllMovies = () => API.get("/movie/allMovies");
 export const fetchMovieById = (id) => API.get(`/movie/${id}`);
