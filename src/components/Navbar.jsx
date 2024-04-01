@@ -73,12 +73,12 @@ function Navbar({ onInputClick }) {
 
     return (
         <div className='navbar-container'>
-            <div className={'nav-item home-icon'}>
+            <div className={'home-icon'}>
                 <Link to='/'>
                     <img className='main-icon' src='https://i.ibb.co/zPBYW3H/imgbin-bookmyshow-office-android-ticket-png.png' alt="BookMyShow Logo" />
                 </Link>
             </div>
-            <div className='nav-item navbar-form'>
+            <div className='navbar-form'>
                 <form className='navbar-form-class'>
                     <div className='navbar-form-items'>
                         <input
@@ -102,11 +102,11 @@ function Navbar({ onInputClick }) {
                     </div>
 
                 </form>
-                <div className='nav-item nav-link'>
+                <div className='nav-link'>
                     <Link to="/upcomingShows" className='nav-links'>Upcoming Shows</Link>
                     <Link to="/previouslyWatchedShows" className='nav-links'>Previously Watched</Link>
                 </div>
-                <div className='nav-item navbar-user'>
+                <div className='navbar-user'>
                     {userData ? (
                         <div className='user-info'>
                             <span>{userData.user.first_name[0]}</span>
