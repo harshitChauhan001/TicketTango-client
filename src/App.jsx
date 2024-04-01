@@ -25,8 +25,10 @@ function App() {
     <div style={{ width: '100%', height: '100%' }}>
       {inputClicked ?
         <Router>
+          <div className="all-routes-container" >
 
-          <NavbarSearch OnBackClick={handleBackClick} />
+            <NavbarSearch OnBackClick={handleBackClick} />
+          </div>
         </Router>
 
 
@@ -35,7 +37,10 @@ function App() {
 
           <Router>
             <Navbar onInputClick={handleInputClick} />
-            <AllRoutes />
+            <div className="all-routes-container" >
+
+              <AllRoutes />
+            </div>
             <Footer />
           </Router>
 
