@@ -14,7 +14,8 @@
     margin-bottom: 0;
     min-height: 60px;
     margin-left: 0;
-    width: calc(100% - 2.5vw);
+    /* width: calc(100% - 2.5vw); */
+    width: 100%;
     position: fixed;
     top: 0;
     white-space: nowrap;
@@ -116,10 +117,8 @@ input:hover {
 .nav-links {
     border-radius: 20px;
     cursor: pointer;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 15px;
-    padding-left: 15px;
+   
+    padding: 2% 3% 2% 3%;
     font-size: large;
     align-items: center;
 
