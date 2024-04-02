@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
-import { logIn, signUp } from '../../api';
+import { logIn, signUp, OTPGenerate, OTPVerify } from '../../api';
 import Navbar from '../../components/Navbar';
 import NavbarSearch from '../../components/NavbarSearch';
 import "../../styles/Auth.css"
@@ -19,8 +19,11 @@ function Auth() {
         date_of_birth: '',
         gender: '',
         phone_number: '',
- 
+
     })
+    const [isOtpVerified, setIsOtpVerified] = useState(false);
+    const [showOtpEnterPart, setShowOtpEnterPart] = useState(true);
+    const [otp, setOtp] = useState("");
 
 
 
@@ -37,8 +40,68 @@ function Auth() {
             })
         })
     }
+    const handleOtpGeneration = async () => {
+        const { email } = userData;
+        console.log(email, "email is entered in the field for otp generation")
+        if (!email) {
+            alert("Please enter email first");
+            return;
+        }
+        try {
+            const secret = await OTPGenerate(email);
+            console.log(secret.data.secret);
+            localStorage.setItem('secret', JSON.stringify(secret.data.secret));
+            setShowOtpEnterPart(true);
+
+        } catch (error) {
+            if (error.response.data.message === "User already exist") {
+                alert("user already registered")
+                return;
+            }
+            console.log(error);
+            return;
+        }
+
+
+    }
+    const handleOtpVerification = async () => {
+        const secret = JSON.parse(localStorage.getItem('secret'));
+        console.log(otp);
+        console.log(secret);
+        if (otp === "") {
+            alert("enter the otp first");
+            return;
+        }
+        if (!secret) {
+            alert("refresh the page");
+            return;
+        }
+        try {
+            const response = await OTPVerify(secret, otp);
+            console.log("this si the response", response)
+            if (response.data.message === "OTP is valid") {
+                setIsOtpVerified(true);
+                setShowOtpEnterPart(false);
+                setOtp("");
+            }
+            if (response.data.message === "OTP is invalid") {
+                setIsOtpVerified(false);
+                setShowOtpEnterPart(false);
+                setOtp("");
+            }
+        } catch (error) {
+            console.log(error);
+            if (error.response.data.message === "OTP is invalid") {
+                setIsOtpVerified(false);
+                setShowOtpEnterPart(false);
+                setOtp("");
+                alert("Invalid otp. Try again")
+            }
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
+
 
         if (!isSignUp) {
             const { email, password } = userData;
@@ -46,16 +109,20 @@ function Auth() {
                 alert("Enter email and password");
                 return;
             }
-            else {
-                try {
-                    const user = await logIn(email, password);
-                    sessionStorage.setItem('userData', JSON.stringify(user.data));
-                    navigate("/");
-                } catch (error) {
-                    console.log("Login failed: ", error.response.data.message)
-                    alert(error.response.data.message);
-                }
+            if (!isOtpVerified) {
+                alert("Please verify your email id first");
+                return;
             }
+
+            try {
+                const user = await logIn(email, password);
+                sessionStorage.setItem('userData', JSON.stringify(user.data));
+                navigate("/");
+            } catch (error) {
+                console.log("Login failed: ", error.response.data.message)
+                alert(error.response.data.message);
+            }
+
         }
         else {
             const { email, password, first_name, last_name, date_of_birth, gender, phone_number } = userData;
@@ -65,6 +132,10 @@ function Auth() {
             }
             if (phone_number.length !== 10) {
                 alert("Enter valid Phone number");
+                return;
+            }
+            if (!isOtpVerified) {
+                alert("Please verify your email id first");
                 return;
             }
             else {
@@ -80,7 +151,12 @@ function Auth() {
             }
         }
     }
-    
+    useEffect(() => {
+        setIsOtpVerified(false);
+        setShowOtpEnterPart(false);
+        setOtp("");
+    }, [])
+
 
     return (
 
@@ -89,7 +165,15 @@ function Auth() {
             <div className='auth-container'>
                 <form className='auth-form' onSubmit={handleSubmit}>
                     <h4>Email</h4>
-                    <input type='email' name='email' value={userData.email} onChange={handleChange}></input>
+                    <input type='email' name='email' value={userData.email} onChange={handleChange} readOnly={isOtpVerified}></input>
+                    {isSignUp && !isOtpVerified && (<button type="button" onClick={handleOtpGeneration}>Send Otp for email verification</button>)}
+                    {showOtpEnterPart && !isOtpVerified &&
+                        <div>
+                            <input type='number' value={otp} onChange={(e) => { setOtp(e.target.value) }}></input>
+                            <button type="button" onClick={handleOtpVerification}>Verify</button>
+                        </div>
+                    }
+                    {isSignUp && isOtpVerified && (<div style={{ color: "lightblue" }}>email verified</div>)}
                     <h4>Password</h4>
                     <input type='password' name='password' value={userData.password} onChange={handleChange}></input>
                     {isSignUp && (
@@ -110,7 +194,7 @@ function Auth() {
                             </select>
                             <h4>Phone Number:</h4>
                             <input type='tel' name='phone_number' value={userData.phone_number} onChange={handleChange}></input>
-                            
+
                         </div>
                     )}
                     <button type="submit" className='auth-btn'>{isSignUp ? 'Signup' : 'Login'}</button>
