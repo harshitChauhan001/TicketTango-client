@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://electric-blue-worm-hose.cyclic.app/" });
+const API = axios.create({ baseURL: "http://localhost:3000" });
 
 export const fetchAllMovies = () => API.get("/movie/allMovies");
 export const fetchMovieById = (id) => API.get(`/movie/${id}`);
@@ -21,8 +21,7 @@ export const signUp = (
   last_name,
   date_of_birth,
   gender,
-  phone_number,
-
+  phone_number
 ) =>
   API.post("/user/auth/register", {
     email,
@@ -32,11 +31,12 @@ export const signUp = (
     date_of_birth,
     gender,
     phone_number,
-    
   });
 export const logIn = (email, password) =>
   API.post("/user/auth/login", { email, password });
 export const logOut = () => API.post("/user/auth/logout");
+export const OTPGenerate = (email) => API.post("/user/auth/generateOTP",{email});
+export const OTPVerify = (secret,otp) => API.post("/user/auth/verifyOTP",{secret,otp});
 
 export const fetchAllTheaters = () => API.get("/theater/allTheaters");
 export const fetchTheatersOnLocation = (location) =>
@@ -52,24 +52,28 @@ export const fetchTheaterByName = (name) =>
     },
   });
 export const fetchTheaterById = (id) => API.get(`theater/${id}`);
-export const fetchTheatersByMovie = (movieId, location) => API.get("/theater/byMovie", {
-  params: {
-    location: location,
-    movieId:movieId
-  }
-})
-export const postTheater = (name, address, location, capacity,token) =>
-  API.post("/theater/createTheater", {
-    name,
-    address,
-    location,
-    capacity,
-  },
-    {
-    headers: {
-      Authorization: token
+export const fetchTheatersByMovie = (movieId, location) =>
+  API.get("/theater/byMovie", {
+    params: {
+      location: location,
+      movieId: movieId,
     },
   });
+export const postTheater = (name, address, location, capacity, token) =>
+  API.post(
+    "/theater/createTheater",
+    {
+      name,
+      address,
+      location,
+      capacity,
+    },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
 
 export const fetchAllShowTime = () => API.get("/showTime/allShows");
 export const fetchShowTimeById = (id) => API.get(`/showTime/${id}`);
@@ -89,45 +93,62 @@ export const fetchAllShowTimeOfTheaterByDate = (
 export const fetchPreviouslyWatchedShows = (token) =>
   API.get("/showTime/previouslyWatched", {
     headers: {
-      Authorization: token
+      Authorization: token,
     },
   });
 export const fetchUpcomingBookedShows = (token) =>
   API.get("/showTime/upcomingShows", {
     headers: {
-      Authorization: token
+      Authorization: token,
     },
   });
-export const postShowTime = (theaterId, movieName, dateTime, ticketPrice,token) =>
-  API.post("/showTime/api/showTimes", {
-    theaterId,
-    movieName,
-    dateTime,
-    ticketPrice,
-  },
+export const postShowTime = (
+  theaterId,
+  movieName,
+  dateTime,
+  ticketPrice,
+  token
+) =>
+  API.post(
+    "/showTime/api/showTimes",
     {
-    headers: {
-      Authorization: token
+      theaterId,
+      movieName,
+      dateTime,
+      ticketPrice,
     },
-  });
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
 
 export const fetchSeatStatus = (showTimeId) =>
   API.get(`/seat/showTime/${showTimeId}`);
-export const bookSeats = (seatIds, showTimeId,token) =>
-  API.post("/seat/book", { seatIds, showTimeId }, {
-    headers: {
-      Authorization: token
-    },
-  });
-export const postSeats = (seats, theaterId,token) =>
-  API.post(`/seat/addSeats/${theaterId}`, { seats,theaterId }, {
-    headers: {
-      Authorization: token
-    },
-  });
-  export const fetchAllTicketDetails = (token, showTimeId) => API.get(`/ticket/allTickets?showTimeId=${showTimeId}`, {
-    headers: {
-        Authorization: token
+export const bookSeats = (seatIds, showTimeId, token) =>
+  API.post(
+    "/seat/book",
+    { seatIds, showTimeId },
+    {
+      headers: {
+        Authorization: token,
+      },
     }
-});
-
+  );
+export const postSeats = (seats, theaterId, token) =>
+  API.post(
+    `/seat/addSeats/${theaterId}`,
+    { seats, theaterId },
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
+  );
+export const fetchAllTicketDetails = (token, showTimeId) =>
+  API.get(`/ticket/allTickets?showTimeId=${showTimeId}`, {
+    headers: {
+      Authorization: token,
+    },
+  });
