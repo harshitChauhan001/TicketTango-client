@@ -109,10 +109,7 @@ function Auth() {
                 alert("Enter email and password");
                 return;
             }
-            if (!isOtpVerified) {
-                alert("Please verify your email id first");
-                return;
-            }
+           
 
             try {
                 const user = await logIn(email, password);
