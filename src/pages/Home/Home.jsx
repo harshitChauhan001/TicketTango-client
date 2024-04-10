@@ -58,13 +58,15 @@ function Home() {
     }, [])
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
-
                 const moviesByGenres = await fetchMovieByNameAndGenre('', selectedGenres.join(','));
                 setAllMoviesBasedOnGenres(moviesByGenres.data);
             } catch (error) {
                 console.log(error.message);
+            setError(error.message);
             }
+            setLoading(false);
         };
         fetchData();
     }, [selectedGenres]);
@@ -75,8 +77,8 @@ function Home() {
         <div className="page-container">
             <div className="page-left-container">
                 {loading && <p>Loading...</p>}
-                {error && <p>Error: {error}</p>}
-                {!loading && !error &&
+                {err && <p>Error: {err}</p>}
+                {!loading && !err &&
                 <div className="movielist-container">
 
                     {allMoviesBasedOnGenres.length == 0 ? "No Movies Available " : allMoviesBasedOnGenres.map((movie) => (
