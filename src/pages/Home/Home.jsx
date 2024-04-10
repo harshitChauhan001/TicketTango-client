@@ -22,7 +22,7 @@ function Home() {
     const [allMoviesBasedOnGenres, setAllMoviesBasedOnGenres] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [loading, setLoading] = useState(true);
-
+    const [err,setErr]=useState(null);
 
     const navigate = useNavigate();
 
@@ -43,13 +43,16 @@ function Home() {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const allMovies = await fetchAllMovies();
                 setMovies(allMovies.data);
 
             } catch (error) {
                 console.log(error.message);
+                setErr(error.message)
             }
+            setLoading(false);
         };
         fetchData();
     }, [])
@@ -71,6 +74,9 @@ function Home() {
 
         <div className="page-container">
             <div className="page-left-container">
+                {loading && <p>Loading...</p>}
+                {error && <p>Error: {error}</p>}
+                {!loading && !error &&
                 <div className="movielist-container">
 
                     {allMoviesBasedOnGenres.length == 0 ? "No Movies Available " : allMoviesBasedOnGenres.map((movie) => (
@@ -78,6 +84,7 @@ function Home() {
 
                     ))}
                 </div>
+                }
             </div>
             <div className="page-right-container">
                 <div className="sidebar-container">
