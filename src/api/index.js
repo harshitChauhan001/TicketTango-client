@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "https://dull-pear-lion-wig.cyclic.app/" });
+const API = axios.create({ baseURL: "https://tickettango-server.onrender.com/" });
 
 export const fetchAllMovies = () => API.get("/movie/allMovies");
 export const fetchMovieById = (id) => API.get(`/movie/${id}`);
